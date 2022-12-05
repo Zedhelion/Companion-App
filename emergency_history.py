@@ -3,6 +3,7 @@ from PyQt5.QtWidgets import QMessageBox, QAbstractItemView, QTableWidgetItem
 import mysql.connector
 import xlsxwriter
 import os
+from datetime import *
 
 class Ui_emergency_history(object):
     def connectDatabase(self):
@@ -63,9 +64,11 @@ class Ui_emergency_history(object):
 
     def export(self):
         print("export")
+        self.datenow = datetime.now()
+        self.formatted_datetime = self.datenow.strftime("%d;%m;%Y %H;%M;%S")
         self.username = os.getlogin()
         self.path = str("C:/Users/" + self.username)
-        self.directory = str(self.path + '/Desktop/Emergency History.xlsx')
+        self.directory = str(self.path + '/Desktop/' + self.formatted_datetime + ' Emergency History.xlsx')
         
         self.outWorkBook = xlsxwriter.Workbook(self.directory)
         self.outsheet = self.outWorkBook.add_worksheet()

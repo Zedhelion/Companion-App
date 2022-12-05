@@ -12,6 +12,7 @@ import vlc
 import tkinter
 from tkinter import * 
 from tkinter import messagebox as mb
+from datetime import *
 
 class Ui_Desktop_MainWindow(QtWidgets.QMainWindow):
 
@@ -47,52 +48,50 @@ class Ui_Desktop_MainWindow(QtWidgets.QMainWindow):
             self.errorDisplay(err.errno, err.sqlstate, err.msg)
     
     def export(self):
-        exporter = QMessageBox.question(self, 'Notice', 'This will erase the previous file, continue anyway?', 
-                                     QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
 
-        if exporter == QMessageBox.Yes:
-            self.username = os.getlogin()
-            self.path = str("C:/Users/" + self.username)
-            self.directory = str(self.path + '/Desktop/Access History.xlsx')
-            
-            self.outWorkBook = xlsxwriter.Workbook(self.directory)
-            self.outsheet = self.outWorkBook.add_worksheet()
+        self.datenow = datetime.now()
+        self.formatted_datetime = self.datenow.strftime("%d;%m;%Y %H;%M;%S")
+        self.username = os.getlogin()
+        self.path = str("C:/Users/" + self.username)
+        self.directory = str(self.path + '/Desktop/' + self.formatted_datetime + ' Access History.xlsx')
+        
+        self.outWorkBook = xlsxwriter.Workbook(self.directory)
+        self.outsheet = self.outWorkBook.add_worksheet()
 
-            self.outsheet.write("A1", "Date & Time")
-            self.outsheet.write("B1", "Responder ID")
-            self.outsheet.write("C1", "Responder Name")
-            self.outsheet.write("D1", "Responder Course")
-            self.outsheet.write("E1", "Injury")
-            self.outsheet.write("F1", "Body Part")
-            
-            self.mycursor.execute("SELECT * FROM access_history")
-            self.result = self.mycursor.fetchall()
-            
-            self.column1 = [item[0] for item in self.result]
-            self.column2 = [item[1] for item in self.result]
-            self.column3 = [item[2] for item in self.result]
-            self.column4 = [item[3] for item in self.result]
-            self.column5 = [item[4] for item in self.result]
-            self.column6 = [item[5] for item in self.result]
+        self.outsheet.write("A1", "Date & Time")
+        self.outsheet.write("B1", "Responder ID")
+        self.outsheet.write("C1", "Responder Name")
+        self.outsheet.write("D1", "Responder Course")
+        self.outsheet.write("E1", "Injury")
+        self.outsheet.write("F1", "Body Part")
+        
+        self.mycursor.execute("SELECT * FROM access_history")
+        self.result = self.mycursor.fetchall()
+        
+        self.column1 = [item[0] for item in self.result]
+        self.column2 = [item[1] for item in self.result]
+        self.column3 = [item[2] for item in self.result]
+        self.column4 = [item[3] for item in self.result]
+        self.column5 = [item[4] for item in self.result]
+        self.column6 = [item[5] for item in self.result]
 
-            for item in range(len(self.column1)):
-                    self.outsheet.write(item + 1, 0, self.column1[item])
-                    self.outsheet.write(item + 1, 1, self.column2[item])
-                    self.outsheet.write(item + 1, 2, self.column3[item])
-                    self.outsheet.write(item + 1, 3, self.column4[item])
-                    self.outsheet.write(item + 1, 4, self.column5[item])
-                    self.outsheet.write(item + 1, 5, self.column6[item])
+        for item in range(len(self.column1)):
+                self.outsheet.write(item + 1, 0, self.column1[item])
+                self.outsheet.write(item + 1, 1, self.column2[item])
+                self.outsheet.write(item + 1, 2, self.column3[item])
+                self.outsheet.write(item + 1, 3, self.column4[item])
+                self.outsheet.write(item + 1, 4, self.column5[item])
+                self.outsheet.write(item + 1, 5, self.column6[item])
 
-            self.outWorkBook.close()
+        self.outWorkBook.close()
 
-            msg = QMessageBox()
-            msg.setIcon(QMessageBox.Information)
-            msg.setWindowIcon(QtGui.QIcon('green_cross.png'))
-            msg.setText("Data Has Been Exported as Excel File")
-            msg.setWindowTitle("Success")
-            msg.exec_()
-        else:
-            pass
+        msg = QMessageBox()
+        msg.setIcon(QMessageBox.Information)
+        msg.setWindowIcon(QtGui.QIcon('green_cross.png'))
+        msg.setText("Data Has Been Exported as Excel File")
+        msg.setWindowTitle("Success")
+        msg.exec_()
+
 
 
     def closeEvent(self, event):
