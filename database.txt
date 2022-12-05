@@ -1,0 +1,13 @@
+host="localhost",
+user="root",
+password="Admin123",
+database="companion_app"
+
+database/schema name: companion_app
+
+tables: (all columns are varchar 45)
+	access_history 
+		date_time_a, responder id, responder_name, responder_course, injury, body_part
+	
+	emergency_history	
+		date_time_e, responder id, responder_name, responder_course, patient_id, patient_name, patient_course, injury, body_part, patient_gender, patient_age

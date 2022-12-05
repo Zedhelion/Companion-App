@@ -1,0 +1,17 @@
+<RCC>
+  <qresource prefix="refresh">
+    <file>refresh.png</file>
+  </qresource>
+  <qresource prefix="bg-image">
+    <file>abstract-white-graphic-design-presentation-background-web-template_156943-914.png</file>
+  </qresource>
+  <qresource prefix="stop">
+    <file>stop.png</file>
+  </qresource>
+  <qresource prefix="listen">
+    <file>listen.png</file>
+  </qresource>
+  <qresource prefix="export">
+    <file>export.png</file>
+  </qresource>
+</RCC>
